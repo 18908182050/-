@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('{{ url_for('static', filename='background/background.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            color: #343a40;
+        }
+        nav {
+            display: flex; /* 使用 flexbox 布局 */
+            align-items: center; /* 垂直居中对齐 */
+            justify-content: space-between; /* 两边对齐 */
+            background-color: rgba(255, 182, 193, 0.7); /* 半透明浅粉色导航栏 */
+            padding: 10px 20px;
+            border-radius: 0.5rem;
+            margin-bottom: 100px;
+        }
+        nav img {
+            height: 50px; /* logo 高度 */
+            margin-right: 15px;
+        }
+        .nav-title {
+            font-size: 28px; /* 标题字体大小 */
+            font-weight: 700; /* 粗体 */
+            color: #007bff; /* 字体颜色 */
+            text-align: center; /* 中间对齐 */
+            letter-spacing: 2px; /* 字符间距 */
+            flex-grow: 1; /* 使标题占据剩余空间 */
+            text-align: center; /* 中间对齐 */
+        }
+        nav a {
+            color: #ffffff;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .anime-card {
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #343a40;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        .anime-card:hover {
+            transform: scale(1.05);
+        }
+        .anime-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+        .anime-description {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="{{ url_for('static', filename='logo/logo.jpg') }}" alt="Logo">
+
+        <span class="nav-title">YY动漫屋</span>
+
+        <div>
+            <a href="{{ url_for('home') }}">首页</a>
+            {% if user %}
+                <span>Welcome, {{ user.username }}!</span>
+                <a href="{{ url_for('logout') }}">退出</a>
+                <a href="{{ url_for('user') }}">个人中心</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">登录</a>
+                <a href="{{ url_for('register') }}">注册</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- 动漫分类下拉框 -->
+        <div class="anime-category mb-4">
+            <label for="categorySelect">选择动漫分类:</label>
+            <select id="categorySelect" class="form-control" onchange="filterAnime()">
+                <option value="all">所有</option>
+                <option value="action">动作</option>
+                <option value="comedy">恋爱</option>
+                <option value="drama">剧情</option>
+                <option value="fantasy">幻想</option>
+                <option value="adventure">冒险</option>
+                <option value="slice-of-life">生活</option>
+            </select>
+        </div>
+
+        <!-- 动漫名称搜索框 -->
+        <div class="anime-search mb-4">
+            <label for="animeSearch">搜索动漫名称:</label>
+            <input type="text" id="animeSearch" class="form-control" oninput="filterAnime()">
+        </div>
+
+        <!-- 动漫排布 -->
+        <div class="row">
+    <div class="col-md-3 anime-card" data-category="action">
+        <img src="{{ url_for('static', filename='images/jr.jpg') }}" alt="Attack on Titan">
+        <h5>进击的巨人</h5>
+        <p class="anime-description">一部关于人类与巨人之间斗争的故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='进击的巨人') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="fantasy">
+        <img src="{{ url_for('static', filename='images/ndmz.jpg') }}" alt="Your Name">
+        <h5>你的名字</h5>
+        <p class="anime-description">少年与少女的灵魂互换的奇幻故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='你的名字') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="comedy">
+        <img src="{{ url_for('static', filename='images/baiquan.jpg') }}" alt="Gintama">
+        <h5>败犬女主</h5>
+        <p class="anime-description">以幽默和恋爱为主要元素的故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='败犬女主') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="action">
+        <img src="{{ url_for('static', filename='images/gmzr.jpg') }}" alt="Demon Slayer">
+        <h5>鬼灭之刃</h5>
+        <p class="anime-description">少年为了拯救自己的弟妹而成为鬼杀队员的故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='鬼灭之刃') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="action">
+        <img src="{{ url_for('static', filename='images/jujutsu.jpg') }}" alt="Jujutsu Kaisen">
+        <h5>咒术回战</h5>
+        <p class="anime-description">一个年轻的咒术师与恶灵抗争的故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='咒术回战') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="fantasy">
+        <img src="{{ url_for('static', filename='images/spy-family.jpg') }}" alt="Spy x Family">
+        <h5>间谍家家酒</h5>
+        <p class="anime-description">讲述间谍、刺客与超能力者组成的家庭生活。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='间谍家家酒') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="adventure">
+        <img src="{{ url_for('static', filename='images/one-piece.jpg') }}" alt="One Piece">
+        <h5>海贼王</h5>
+        <p class="anime-description">追寻成为海贼王梦想的冒险之旅。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='海贼王') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="slice-of-life">
+        <img src="{{ url_for('static', filename='images/kono_subarashii.jpg') }}" alt="KonoSuba">
+        <h5>这个是僵尸吗？</h5>
+        <p class="anime-description">一名少年在异世界生活的搞笑日常。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='这个是僵尸吗？') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="drama">
+        <img src="{{ url_for('static', filename='images/hells_paradise.jpg') }}" alt="Hell's Paradise">
+        <h5>地狱乐园</h5>
+        <p class="anime-description">一名忍者为寻求永生而踏上的冒险之旅。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='地狱乐园') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="drama">
+        <img src="{{ url_for('static', filename='images/typemoon.jpg') }}" alt="Fate/strange Fake">
+        <h5>Fate/strange Fake</h5>
+        <p class="anime-description">围绕着圣杯战争展开的全新故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='Fate/strange Fake') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="action">
+        <img src="{{ url_for('static', filename='images/blue_lock.jpg') }}" alt="Blue Lock">
+        <h5>蓝锁</h5>
+        <p class="anime-description">足球竞争中的心理战与成长故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='蓝锁') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+
+    <div class="col-md-3 anime-card" data-category="drama">
+        <img src="{{ url_for('static', filename='images/djsy.jpg') }}" alt="Your Eyes">
+        <h5>刀剑神域</h5>
+        <p class="anime-description">涉及爱情与成长的感人故事。</p>
+        <form method="POST" action="{{ url_for('add_favorite', anime_title='刀剑神域') }}">
+            <button type="submit" class="btn btn-warning">收藏</button>
+        </form>
+    </div>
+</div>
+
+    </div>
+
+
+    <!-- 模态框 -->
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">提示信息</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        <!-- 消息内容将插入此处 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.getElementById('modalMessage').textContent = "{{ messages[0] }}";
+                        $('#messageModal').modal('show');
+                    });
+                </script>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function filterAnime() {
+            const selectedCategory = document.getElementById("categorySelect").value.toLowerCase();
+            const searchTerm = document.getElementById("animeSearch").value.toLowerCase();
+            const cards = document.querySelectorAll(".anime-card");
+
+            cards.forEach((card) => {
+                const category = card.getAttribute("data-category").toLowerCase();
+                const title = card.querySelector("h5").textContent.toLowerCase();
+
+                const matchesCategory = (selectedCategory === "all" || category === selectedCategory);
+                const matchesSearch = title.includes(searchTerm);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = ""; // 显示卡片
+                } else {
+                    card.style.display = "none"; // 隐藏卡片
+                }
+            });
+        }
+    </script>
+
+
+</body>
+</html>

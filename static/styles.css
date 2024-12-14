@@ -1,0 +1,91 @@
+
+    body {
+        font-family: 'Roboto', sans-serif; /* 使用Roboto字体 */
+        color: #007bff; /* 字体 */
+        margin: 0;
+        padding: 0;
+    }
+    nav {
+       background-color: rgba(255, 182, 193, 0.7); /* 半透明浅粉色导航栏 */
+        color: #ffffff; /* 字体颜色 */
+        padding: 10px 20px;
+        display: flex;
+        justify-content: flex-start; /* 靠左对齐 */
+        border-radius: 0.5rem;
+    }
+    nav a {
+        color: #ffffff; /* 白色链接 */
+        margin: 0 15px;
+        text-decoration: none; /* 去掉下划线 */
+        font-weight: bold; /* 加粗字体 */
+    }
+    nav a:hover {
+        text-decoration: underline; /* 鼠标悬停时有下划线 */
+    }
+    .container {
+        margin-top: 20px; /* 上方间距 */
+        background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
+        padding: 20px;
+        border-radius: 0.5rem; /* 圆角 */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 增加阴影效果 */
+        display: flex; /* Flex容器 */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; /* 竖向排列 */
+        height: calc(100vh - 60px); /* 高度扣除导航栏 */
+    }
+    .anime-category {
+        margin-bottom: 20px;
+    }
+    .anime-table img {
+        width: 100px; /* 控制图片宽度 */
+        height: auto; /* 自适应高度 */
+        border-radius: 0.5rem; /* 图片圆角 */
+    }
+    .modal-header {
+        background-color: #343a40; /* 模态框标题栏背景色 */
+        color: white; /* 模态框标题栏字体颜色 */
+    }
+    .modal-footer button {
+        margin-left: 5px; /* 按钮左边间距 */
+    }
+    .btn-primary {
+        background-color: #007bff; /* 青色按钮 */
+        border-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3; /* 青色按钮悬停效果 */
+        border-color: #0056b3;
+    }
+    form {
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+        padding: 20px;
+        margin-top: 10px;
+        width: 300px;
+    }
+    input[type="text"], input[type="password"], button {
+        width: 100%; /* 宽度100% */
+        padding: 10px; /* 内边距 */
+        margin: 10px 0; /* 外边距 */
+        border: 1px solid #ccc; /* 边框 */
+        border-radius: 4px; /* 圆角 */
+    }
+    button {
+        background-color: #5cb85c; /* 按钮颜色 */
+        color: white; /* 按钮字体颜色 */
+        border: none; /* 去掉边框 */
+        cursor: pointer; /* 鼠标指针 */
+    }
+    button:hover {
+        background-color: #4cae4c; /* 鼠标悬停颜色 */
+    }
+    ul {
+        list-style-type: none; /* 无序列表无样式 */
+        padding: 0; /* 去掉内边距 */
+    }
+    ul li {
+        color: red; /* 错误消息为红色 */
+    }
+
